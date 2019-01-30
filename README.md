@@ -8,9 +8,13 @@ for most of the MicroProfile parts.
 
 ## Starting the application (in the IDE)
 To run the application in your IDE you need the **Thorntail Runner**  
-configured. For details see:
+configured. 
 
-https://thorntail.io/posts/thorntail-runner/
+For details see: https://thorntail.io/posts/thorntail-runner/
+
+**Please be aware that starting your application under a Windows OS, 
+can cause unpredictable errors, e.g. if you use too many dependencies (
+at least with Thorntail <= 2.3.0)**
 
 ## Application structure
 The directory `src/main/resources` contains the default configuration
@@ -30,3 +34,25 @@ with the included example configuration it would be
 For details on MicroProfile Health see
 
 https://github.com/eclipse/microprofile-health
+
+## MicroProfile Metrics
+The metrics endpoint is automatically available if you add the `microprofile` dependency
+and can be accessed via `http://localhost:8099/metrics`.
+
+It displays all metrics, including base, vendor and application (your own), metrics.
+These categories are defined by the specification, see: 
+
+https://github.com/eclipse/microprofile-metrics/blob/master/spec/src/main/asciidoc/architecture.adoc
+
+For accessing only your own metrics you can use the URL
+`http://localhost:8099/metrics/application` (defining the scope as application)
+
+If nothing is showing up (or you're redirected to base), you might need to call one of the metric collecting 
+controllers first.
+
+For example you can access the `AdvancedMetricController` (which uses programmatic 
+access to the metrics) with the URL 
+`http://localhost:8099/myservice/mymetricsadvanced/historgram?number=12`
+
+For details on implementing own metrics see:
+https://github.com/eclipse/microprofile-metrics/blob/master/spec/src/main/asciidoc/app-programming-model.adoc
