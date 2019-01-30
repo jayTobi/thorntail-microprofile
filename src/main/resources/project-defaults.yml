@@ -1,0 +1,5 @@
+# this is the default configuration file for the app
+# properties can be overridden by command line arguments or system environment vars
+thorntail:
+  http:
+    port: 8099
