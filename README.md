@@ -56,3 +56,16 @@ access to the metrics) with the URL
 
 For details on implementing own metrics see:
 https://github.com/eclipse/microprofile-metrics/blob/master/spec/src/main/asciidoc/app-programming-model.adoc
+
+## Integration testing with Arquillian
+Following the brief description on how to test your Thorntail Microservice with Arquillian
+(https://docs.thorntail.io/2.3.0.Final/#testing-in-a-container_thorntail) it is quite easy to 
+integration test your app.
+
+You can find a simple test in ```HelloWorldEndpointIT``` class which 
+tests the response from a REST endpoint.
+
+**Please note that you need a ```META-INF\beans.xml``` file for getting CDI to work with Arquillian.**
+
+I also added some new plugins to the ```pom.xml``` to configure the resources for integration tests (the ```src\it``` folder).
+
