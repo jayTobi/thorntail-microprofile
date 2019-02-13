@@ -65,6 +65,10 @@ integration test your app.
 You can find a simple test in ```HelloWorldEndpointIT``` class which 
 tests the response from a REST endpoint.
 
+Please note that you **should not** use ```@Deployment``` 
+annotation on static methods that return an Archive, as you normally do with
+Arquillian and as your friendly IDE might suggest.
+
 **Please note that you need a ```META-INF\beans.xml``` file for getting CDI to work with Arquillian.**
 
 I also added some new plugins to the ```pom.xml``` to configure the resources for integration tests (the ```src\it``` folder).
