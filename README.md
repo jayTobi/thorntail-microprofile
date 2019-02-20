@@ -12,9 +12,17 @@ configured.
 
 For details see: https://thorntail.io/posts/thorntail-runner/
 
+### Problems running on Windows OS
 **Please be aware that starting your application under a Windows OS, 
 can cause unpredictable errors, e.g. if you use too many dependencies (
 at least with Thorntail <= 2.3.0)**
+
+To fix one (or all?) of the errors, normally something like "classpath too long", in your IDE
+you need additional config to handle the classpath. 
+
+E.g. in IntelliJ you can edit your "Run configuration"  (of your Runner, integration test)
+and use the **Shorten command line** setting to e.g. "JAR Manifest" under the "Configuration" tab. 
+The default is to only use class names which leads to the error.  
 
 ## Application structure
 The directory `src/main/resources` contains the default configuration
@@ -63,7 +71,7 @@ Following the brief description on how to test your Thorntail Microservice with 
 integration test your app.
 
 You can find a simple test in ```HelloWorldEndpointIT``` class which 
-tests the response from a REST endpoint.
+tests the response from a REST endpoint (without actually using a HTTP request - just a method call on a CDI bean).
 
 Please note that you **should not** use ```@Deployment``` 
 annotation on static methods that return an Archive, as you normally do with
@@ -71,5 +79,29 @@ Arquillian and as your friendly IDE might suggest.
 
 **Please note that you need a ```META-INF\beans.xml``` file for getting CDI to work with Arquillian.**
 
-I also added some new plugins to the ```pom.xml``` to configure the resources for integration tests (the ```src\it``` folder).
+I also added some new plugins (surefire, failsafe) to the ```pom.xml``` to configure the resources for integration tests (the ```src\it``` folder).
 
+In order to get the unit test (using JUnit 5) 
+and integration tests (that must use JUnit 4 because of Thorntail) 
+working, the ```junit-vintage-engine``` was added.
+
+### Attention
+You have to pay attention to the right imports in your tests: unit test should use 
+```org.junit.jupiter.api.Test``` (JUnit 5) 
+and integration tests using Arquillian should import ``` org.junit.Test``` (JUnit 4); otherwise
+your tests will not be executed.
+
+#### Executing tests with Maven
+To execute your unit test with your Maven build you can simply use ```mvn clean package```.
+As soon as you use install, e.g. ```mvn clean install``` the integration tests will be executed
+(together with the unit tests).
+
+#### Executing tests with IDE
+To execute a (single) integration test in your IDE you might need some additional configuration.
+
+For Intellij IDEA you need a Arquillian Configuration. To create one you can simple go to 
+"Edit Configurations" (where you normally start your app), add a new "Arquillian JUnit" configuration,
+select your class to test in the "Configurations" tab and add a new "Manual container configuration" 
+without any further settings (those settings will be provided by the Thorntail deployment).
+Now you should be able to start a single integration test.
+(For config settings see ```doc\intellij_arquillian\ ```)
